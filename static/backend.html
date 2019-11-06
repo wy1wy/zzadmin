@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<link rel="icon" href="../static/icon.png" />
+
+		<title>Admin</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="../static/bootstrap.min.css" rel="stylesheet" />
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+      <script src="static/html5shiv.min.js"></script>
+      <script src="static/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			@-ms-viewport {
+        width: device-width;
+      }
+      @-o-viewport {
+        width: device-width;
+      }
+      @viewport {
+        width: device-width;
+      }
+      html,
+      body {
+        overflow-x: hidden; /* Prevent scroll on narrow devices */
+      }
+      body {
+        padding-top: 70px;
+      }
+      footer {
+        padding: 30px 0;
+      }
+
+      /*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+      @media screen and (max-width: 767px) {
+        .row-offcanvas {
+          position: relative;
+          -webkit-transition: all 0.25s ease-out;
+          -o-transition: all 0.25s ease-out;
+          transition: all 0.25s ease-out;
+        }
+
+        .row-offcanvas-right {
+          right: 0;
+        }
+
+        .row-offcanvas-left {
+          left: 0;
+        }
+
+        .row-offcanvas-right .sidebar-offcanvas {
+          right: -50%; /* 6 columns */
+        }
+
+        .row-offcanvas-left .sidebar-offcanvas {
+          left: -50%; /* 6 columns */
+        }
+
+        .row-offcanvas-right.active {
+          right: 50%; /* 6 columns */
+        }
+
+        .row-offcanvas-left.active {
+          left: 50%; /* 6 columns */
+        }
+
+        .sidebar-offcanvas {
+          position: absolute;
+          top: 0;
+          width: 50%; /* 6 columns */
+        }
+      }
+    </style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					 aria-controls="navbar">
+						<span class="sr-only"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Refresh</a>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<h2 class="page-header">数据</h2>
+					<div class="table-responsive usalltable">
+						<div></div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>name</th>
+									<th>value</th>
+								</tr>
+							</thead>
+							<tbody id="usall_content">
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<h2 class="page-header">资金池</h2>
+
+					<div class="table-responsive vipstable">
+						<div></div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>name</th>
+									<th>balance</th>
+								</tr>
+							</thead>
+							<tbody id="vips_content">
+								<tr>
+									<td>合约余额</td>
+									<td id="v0">--</td>
+								</tr>
+								<tr>
+									<td>分红池</td>
+									<td id="v1">--</td>
+								</tr>
+								<tr>
+									<td>分享池</td>
+									<td id="v2">--</td>
+								</tr>
+								<tr>
+									<td>股东池</td>
+									<td id="v3">--</td>
+								</tr>
+								<tr>
+									<td>大奖池</td>
+									<td id="v4">--</td>
+								</tr>
+								<tr>
+									<td>小奖池</td>
+									<td id="v5">--</td>
+								</tr>
+								<tr>
+									<td>门票池</td>
+									<td id="v6">--</td>
+								</tr>
+								<tr>
+									<td>保全池</td>
+									<td id="v7">--</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<h2 class="page-header">修改数据</h2>
+			
+					<div class="table-responsive vipstable">
+						<div></div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>name</th>
+									<th>value</th>
+									<th>operate</th>
+								</tr>
+							</thead>
+							<tbody id="">
+								<tr>
+									<td>静态分红比例</td>
+									<td>
+										<input type="text" id="staticRate1" class="form-control ethinput" aria-describedby="sizing-addon1"><br/>
+										<input type="text" id="staticRate2" class="form-control ethinput" aria-describedby="sizing-addon1"><br/>
+										<input type="text" id="staticRate3" class="form-control ethinput" aria-describedby="sizing-addon1">
+									</td>
+									<td>
+										<button type="button" id="randomRateBtn" class="btn btn-default">随机</button><br/>
+										<button type="button" id="staticRateBtn" class="btn btn-default" style="margin-top:15px;">修改</button>
+									</td>
+								</tr>
+								<tr>
+									<td>门票购买比例</td>
+									<td>
+										<input type="text" id="ticketRate" class="form-control ethinput" aria-describedby="sizing-addon1">
+									</td>
+									<td>
+										<button type="button" id="ticketRateBtn" class="btn btn-default">修改</button>
+									</td>
+								</tr>
+								<tr>
+									<td>大奖池发放</td>
+									<td>
+										<input type="text" id="bigAward" class="form-control ethinput" placeholder="奖金" aria-describedby="sizing-addon1"><br/>
+										<input type="text" id="bigGrantNum" class="form-control ethinput" placeholder="分配人数" aria-describedby="sizing-addon1">
+										<span id="bigStatus"></span>
+									</td>
+									<td>
+										<button type="button" id="bigGrantBtn" class="btn btn-default">发放</button>
+									</td>
+								</tr>
+								<tr>
+									<td>小奖池发放</td>
+									<td>
+										<input type="text" id="smallAward" class="form-control ethinput" placeholder="奖金" aria-describedby="sizing-addon1" readonly="readonly"><br/>
+										<span id="smallStatus"></span>
+									</td>
+									<td>
+										<button type="button" id="smallGrantBtn" class="btn btn-default">发放</button>
+									</td>
+								</tr>
+								<tr>
+									<td>提现</td>
+									<td>
+										<input type="text" id="withdrawalsAmount" class="form-control ethinput" placeholder="" aria-describedby="sizing-addon1">
+									</td>
+									<td>
+										<button type="button" id="withdrawalsBtn" class="btn btn-default">确定</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="../static/abi.js"></script>
+		<script src="../static/jquery.min.js"></script>
+		<script src="../static/bootstrap.min.js"></script>
+		<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+
+		<script src="../static/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+		<script src="../static/bignumber.min.js"></script>
+		<script src="../static/alertify.js"></script>
+		<script src="../static/lib1.js"></script>
+		<script src="../static/store.min.js"></script>
+		<script src="../static/clipboard.min.js"></script>
+
+		<script>
+			var BN = BigNumber.clone();
+			var iconins;
+			var itickets;
+			var symbol;
+			var web3 = window.web3;
+			var defaultAccount = '';
+			var lastUserIndex = 0;
+			var updateFun = null;
+			var bigAwardAmount;
+			var smallAwardAmount;
+			var t1;
+			var t2;
+			var refreshBigTimer = function(senconds) {
+				if (senconds > 0) {
+					if (t1) {
+						t1.clear();
+					}
+					t1 = new Tick(senconds, '.b-dtime');
+					t1.timer(t1);
+				} else {
+					$('.b-dtime').html('时间已到');
+				}
+			};
+			var refreshTimer24 = function(senconds) {
+				if (senconds > 0) {
+					if (t2) {
+						t2.clear();
+					}
+					t2 = new Tick(senconds, '.b-dtime24');
+					t2.timer(t2);
+				} else {
+					$('.b-dtime24').html('时间已到');
+				}
+			};
+			$(document).ready(function() {
+				if (window.ethereum) {
+					web3 = window.web3 = new Web3(ethereum);
+				} else {
+					if (window.web3) {
+						web3 = window.web3 = new Web3(web3.currentProvider);
+					}
+				}
+				iconins = new web3.eth.Contract(abi, gcontract);
+				itickets = new web3.eth.Contract(abitoken, ticket);
+				web3.eth.getAccounts(function(err, accounts) {
+					if (err) {
+						alertify.error(err);
+						return;
+					}
+					if (accounts.length == 0) {
+						alertify.error('没有账户');
+						return;
+					}
+					defaultAccount = accounts[0];
+					var option = {
+						from: defaultAccount
+					};
+					if (defaultAccount != '') {
+						updateFun = function(){
+							web3.eth.getBalance(gcontract, function(err, result){
+								$('#v0').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+							});
+							iconins.methods.showPool().call({
+								from: ticket
+							}, function(err, result){
+								if(!err){
+									var a = [];
+									// bonus
+									a.push(web3.utils.fromWei(BN(result[0]).toFixed(), 'ether'));
+									// invest
+									a.push(web3.utils.fromWei(BN(result[1]).toFixed(), 'ether'));
+									// partner
+									a.push(web3.utils.fromWei(BN(result[2]).toFixed(), 'ether'));
+									// big
+									a.push(web3.utils.fromWei(BN(result[3]).toFixed(), 'ether'));
+									// small
+									a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
+									// ticket
+									a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
+									// fee
+									a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
+									
+									$('#v1').html(BN(a[0]).toFixed(8,1));
+									$('#v2').html(BN(a[1]).toFixed(8,1));
+									$('#v3').html(BN(a[2]).toFixed(8,1));
+									$('#v4').html(BN(a[3]).toFixed(8,1));
+									$('#v5').html(BN(a[4]).toFixed(8,1));
+									$('#v6').html(BN(a[5]).toFixed(8,1));
+									$('#v7').html(BN(a[6]).toFixed(8,1));
+									
+									bigAwardAmount = a[3];
+									smallAwardAmount = a[4];
+									$('#bigAward').val(bigAwardAmount);
+									$('#smallAward').val(smallAwardAmount);
+								}
+							});
+							iconins.methods.getWebGameInfo().call({from: ticket}, function(err, result){
+								if (!err) {
+									var a = [];
+									// pool_big
+									a.push(web3.utils.fromWei(BN(result[0]).toFixed(), 'ether'));
+									// pool_small
+									a.push(web3.utils.fromWei(BN(result[1]).toFixed(), 'ether'));
+									// ticketRate
+									a.push(BN(result[2]).toFixed());
+									// burnTokenCount
+									a.push(web3.utils.fromWei(BN(result[3]).toFixed(), 'ether'));
+									// totalInvestCount
+									a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
+									// timeBigPool
+									a.push(BN(result[5]).toFixed());
+									// curUserIndex
+									a.push(BN(result[6]).toFixed());
+									// static rate
+									a.push(BN(result[7]).toFixed() / 1000);
+									// timeSmallPool
+									a.push(BN(result[8]).toFixed());
+							
+									var tbody = '';
+									tbody += '<tr><td>注册用户总量</td><td>'+(a[6]-1)+'</td></tr>';
+									tbody += '<tr><td>静态分红比例</td><td class="statica"></td></tr>';
+									tbody += '<tr><td>总投资金额</td><td>'+(a[4])+'</td></tr>';
+									tbody += '<tr><td>距离下一次开奖（大）</td><td class="b-dtime"></td></tr>';
+									tbody += '<tr><td>距离下一次开奖（小）</td><td class="b-dtime24"></td></tr>';
+									tbody += '<tr><td>门票购买比例</td><td>1:'+(a[2])+'</td></tr>';
+									tbody += '<tr><td>门票燃烧比例</td><td>1:'+(parseInt(a[2]/10))+'</td></tr>';
+									tbody += '<tr><td>已销毁门票</td><td>'+(parseInt(a[3]))+'</td></tr>';
+									$('#usall_content').html(tbody);
+									
+									lastUserIndex = a[6] - 1;
+									$('#bigGrantNum').val(lastUserIndex);
+									$('#ticketRate').val(a[2]);
+								
+									var exp = parseInt(a[5]) + 86400;
+									var diff = exp - Math.round(new Date().getTime() / 1000);
+									refreshBigTimer(diff);
+									
+									var exp2 = parseInt(a[8]) + 86400;
+									var diff2 = exp2 - Math.round(new Date().getTime() / 1000);
+									refreshTimer24(diff2);
+									
+									iconins.methods.getRate2().call({from: ticket}, function(err2, result2){
+										var a2 = [];
+										a2.push(BN(result2[0]).toFixed() / 1000);
+										a2.push(BN(result2[1]).toFixed() / 1000);
+										a2.push(BN(result2[2]).toFixed() / 1000);
+										
+										var td = '';
+										td += a2[0] + '<br/>';
+										td += a2[1] + '<br/>';
+										td += a2[2];
+										$('.statica').html(td);
+										
+										$('#staticRate1').val(a2[0]);
+										$('#staticRate2').val(a2[1]);
+										$('#staticRate3').val(a2[2]);
+									})
+								}
+							});
+						}
+						updateFun();
+						//setInterval(updateFun, 10000);
+					}
+				});
+				$('.navbar-brand').on('click', function(){
+					updateFun();
+				});
+				$('#randomRateBtn').on('click',function(){
+					$('#staticRate1').val(randomNum(3, 20)/1000);
+					$('#staticRate2').val(randomNum(3, 21)/1000);
+					$('#staticRate3').val(randomNum(3, 22)/1000);
+				});
+				$('#staticRateBtn').on('click',function(){
+					var s1 = $('#staticRate1').val() * 1000;
+					var s2 = $('#staticRate2').val() * 1000;
+					var s3 = $('#staticRate3').val() * 1000;
+					if (s1 >= 3 && s1 <= 20 && s2 >= 3 && s2 <= 21 && s3 >= 3 && s3 <= 22){
+						iconins.methods.setRate_abc(s1, s2, s3).send({
+							from: defaultAccount,
+							gas: 1000000
+						}, function(err, result){
+							if(err){
+								alertify.error(err.message);
+							}
+						})
+					}
+				});
+				$('#ticketRateBtn').on('click',function(){
+					var ticketRate = parseInt($('#ticketRate').val());
+					iconins.methods.setTicketRate_abc(ticketRate).send({
+						from: defaultAccount,
+						gas: 1000000,
+					}, function(err, result){
+						if(err){
+							alertify.error(err.message);
+						}
+					});
+				});
+				$('#bigGrantBtn').on('click',function(){
+					if($('#bigAward').val() <= 0 || $('#bigAward').val() > bigAwardAmount){
+						alertify.error('格式：大于零，不能超出奖金上限');
+						return;
+					}
+					if($('#bigGrantNum').val() <= 0 || $('#bigGrantNum').val() > lastUserIndex){
+						alertify.error('格式：整数大于零，小于人员总数');
+						return;
+					}
+					$('#bigStatus').html('处理中');
+					var batch = new web3.BatchRequest();
+					for (var i = lastUserIndex; i > 0; i--) {
+						batch.add(iconins.methods.getUser(i).call.request({from : ticket}, function(err, result){
+							if(!err){
+								userList.push(result);
+								if(userList.length == 1){
+									queryUserListForBigCB();
+								}
+							}
+						}));
+					}
+					batch.execute();
+				});
+				$('#smallGrantBtn').on('click',function(){
+					if(smallAwardAmount < 0.1){
+						alertify.error('奖金太少了');
+						return;
+					}
+					if(lastUserIndex < 31){
+						alertify.error('人数不足够31个');
+						return;
+					}
+					$('#smallStatus').html('处理中');
+					var batch = new web3.BatchRequest();
+					for (var i = lastUserIndex; i > 0; i--) {
+						batch.add(iconins.methods.getUser(i).call.request({from : ticket}, function(err, result){
+							if(!err){
+								userList.push(result);
+								if(userList.length == 1){
+									queryUserListForSmallCB();
+								}
+							}
+						}));
+					}
+					batch.execute();
+				});
+				$('#withdrawalsBtn').on('click', function(){
+					var amount = $('#withdrawalsAmount').val();
+					if(amount <= 0 || amount > parseFloat($('#v0').html())){
+						alertify.error('格式：大于零，不能超出合约余额上限');
+						return;
+					}
+					if(confirm('请问是否从合约余额提现'+amount+'eth？')){
+						iconins.methods.withdraw_abc(web3.utils.toWei(amount + '', 'ether')).send({
+								from: defaultAccount,
+								gas: 1000000
+							},
+							function(err, result) {
+								if (err) {
+									alertify.error(err.message);
+								}
+							}
+						);
+					}
+				});
+			});
+			var userList = [];
+			function queryUserListForBigCB(){
+				$('#bigStatus').html('人员遍历完成');
+				if(userList.length != lastUserIndex){
+					setTimeout(function() {
+						queryUserListForBigCB();
+					}, 1000);
+					return;
+				}
+				$('#bigStatus').html('开始排序');
+				var num = $('#bigGrantNum').val();
+				var money = $('#bigAward').val();
+				var sortArr = [];
+				for (var i = 0; i < userList.length; i++) {
+					if(!userList[i][1]){
+						continue;
+					}		
+					sortArr.push(BN(web3.utils.fromWei(BN(userList[i][4]).toFixed(), 'ether')).toFixed(8, 1)+'@'+userList[i][8]);
+				}
+				var sortArr = sortArr.sort(function(a,b){
+					var _a = parseFloat(a.split('@')[0]);
+					var _b = parseFloat(b.split('@')[0]);
+					return _b - _a;
+				});
+				var indexArr = [];
+				// 找出人员需要分配
+				for (var j = 0; j < num; j++) {
+					if(!sortArr[j]){
+						break;
+					}
+					indexArr[j] = sortArr[j].split('@')[1];
+				}
+				var avgMoney = Math.floor((money / indexArr.length) * 1000) / 1000;
+				console.log(indexArr);
+				console.log('avg = ' + avgMoney + 'eth');
+				if(confirm('大奖：共发放给'+indexArr.length+'个用户，每人平均'+avgMoney+'eth，是否执行发送？')){
+					iconins.methods.sendBigPool_abc(indexArr, web3.utils.toWei(avgMoney + '','ether')).send({
+						from: defaultAccount,
+						gas: 3000000
+					}, function(err, result){
+						if(err){
+							alertify.error(err.message);
+						}else{
+							$('#bigStatus').html('操作完成');
+						}
+					});
+				}else{
+					$('#bigStatus').html('取消操作');
+				}
+				userList = [];
+			}
+			function queryUserListForSmallCB(){
+				$('#smallStatus').html('人员遍历完成');
+				if(userList.length != lastUserIndex){
+					setTimeout(function() {
+						queryUserListForSmallCB();
+					}, 1000);
+					return;
+				}
+				$('#smallStatus').html('开始过滤');
+				var actArr = [];
+				for (var i = 0; i < userList.length; i++) {
+					if(!userList[i][1]){
+						continue;
+					}		
+					actArr.push(userList[i][8]);
+				}
+				$('#smallStatus').html('随机抽取中');
+				var indexArr = getRandomArrayElements(actArr, 31);
+				console.log(indexArr);
+				if(confirm('小奖：共发放给['+indexArr.toString()+']，是否执行发送？')){
+					iconins.methods.sendSmallPool_abc(indexArr).send({
+						from: defaultAccount,
+						gas: 3000000
+					}, function(err, result){
+						if(err){
+							alertify.error(err.message);
+						}else{
+							$('#smallStatus').html('操作完成');
+						}
+					});
+				}else{
+					$('#smallStatus').html('取消操作');
+				}
+				userList = [];
+			}
+			//生成从minNum到maxNum的随机数
+			function randomNum(minNum, maxNum) {
+			  switch (arguments.length) {
+			    case 1:
+			      return parseInt(Math.random() * minNum + 1, 10);
+			      break;
+			    case 2:
+			      return Math.floor(Math.random() * ( maxNum - minNum + 1 ) + minNum);
+			      break;
+			    default:
+			      return 0;
+			      break;
+			  }
+			}
+			function getRandomArrayElements(arr, count) {
+				var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+				while (i-- > min) {
+					index = Math.floor((i + 1) * Math.random());
+					temp = shuffled[index];
+					shuffled[index] = shuffled[i];
+					shuffled[i] = temp;
+				}
+				return shuffled.slice(min);
+			}
+		</script>
+	</body>
+</html>

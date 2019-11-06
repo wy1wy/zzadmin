@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<link rel="icon" href="static/icon.png" />
+
+		<title>Admin</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="static/bootstrap.min.css" rel="stylesheet" />
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+      <script src="static/html5shiv.min.js"></script>
+      <script src="static/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			@-ms-viewport {
+        width: device-width;
+      }
+      @-o-viewport {
+        width: device-width;
+      }
+      @viewport {
+        width: device-width;
+      }
+      html,
+      body {
+        overflow-x: hidden; /* Prevent scroll on narrow devices */
+      }
+      body {
+        padding-top: 70px;
+      }
+      footer {
+        padding: 30px 0;
+      }
+
+      /*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+      @media screen and (max-width: 767px) {
+        .row-offcanvas {
+          position: relative;
+          -webkit-transition: all 0.25s ease-out;
+          -o-transition: all 0.25s ease-out;
+          transition: all 0.25s ease-out;
+        }
+
+        .row-offcanvas-right {
+          right: 0;
+        }
+
+        .row-offcanvas-left {
+          left: 0;
+        }
+
+        .row-offcanvas-right .sidebar-offcanvas {
+          right: -50%; /* 6 columns */
+        }
+
+        .row-offcanvas-left .sidebar-offcanvas {
+          left: -50%; /* 6 columns */
+        }
+
+        .row-offcanvas-right.active {
+          right: 50%; /* 6 columns */
+        }
+
+        .row-offcanvas-left.active {
+          left: 50%; /* 6 columns */
+        }
+
+        .sidebar-offcanvas {
+          position: absolute;
+          top: 0;
+          width: 50%; /* 6 columns */
+        }
+      }
+    </style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					 aria-controls="navbar">
+						<span class="sr-only"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">ZZADMIN</a>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<h2 class="page-header">数据</h2>
+					<div class="table-responsive usalltable">
+						<div></div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>name</th>
+									<th>value</th>
+								</tr>
+							</thead>
+							<tbody id="usall_content">
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<h2 class="page-header">资金池</h2>
+
+					<div class="table-responsive vipstable">
+						<div></div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>name</th>
+									<th>balance</th>
+								</tr>
+							</thead>
+							<tbody id="vips_content">
+								<tr>
+									<td>合约余额</td>
+									<td id="v0">--</td>
+								</tr>
+								<tr>
+									<td>分红池</td>
+									<td id="v1">--</td>
+								</tr>
+								<tr>
+									<td>分享池</td>
+									<td id="v2">--</td>
+								</tr>
+								<tr>
+									<td>股东池</td>
+									<td id="v3">--</td>
+								</tr>
+								<tr>
+									<td>大奖池</td>
+									<td id="v4">--</td>
+								</tr>
+								<tr>
+									<td>小奖池</td>
+									<td id="v5">--</td>
+								</tr>
+								<tr>
+									<td>门票池</td>
+									<td id="v6">--</td>
+								</tr>
+								<tr>
+									<td>保全池</td>
+									<td id="v7">--</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="static/abi.js"></script>
+		<script src="static/jquery.min.js"></script>
+		<script src="static/bootstrap.min.js"></script>
+		<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+
+		<script src="static/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+		<script src="static/bignumber.min.js"></script>
+		<script src="static/alertify.js"></script>
+		<script src="static/lib1.js"></script>
+		<script src="static/store.min.js"></script>
+		<script src="static/clipboard.min.js"></script>
+
+		<script>
+			var BN = BigNumber.clone();
+			var iconins;
+			var itickets;
+			var symbol;
+			var web3 = window.web3;
+			var defaultAccount = '';
+			var t1;
+			var t2;
+			var refreshBigTimer = function(senconds) {
+				if (senconds > 0) {
+					if (t1) {
+						t1.clear();
+					}
+					t1 = new Tick(senconds, '.b-dtime');
+					t1.timer(t1);
+				} else {
+					$('.b-dtime').html('时间已到');
+				}
+			};
+			var refreshTimer24 = function(senconds) {
+				if (senconds > 0) {
+					if (t2) {
+						t2.clear();
+					}
+					t2 = new Tick(senconds, '.b-dtime24');
+					t2.timer(t2);
+				} else {
+					$('.b-dtime24').html('时间已到');
+				}
+			};
+			$(document).ready(function() {
+				if (window.ethereum) {
+					web3 = window.web3 = new Web3(ethereum);
+				} else {
+					if (window.web3) {
+						web3 = window.web3 = new Web3(web3.currentProvider);
+					}
+				}
+				iconins = new web3.eth.Contract(abi, gcontract);
+				itickets = new web3.eth.Contract(abitoken, ticket);
+				web3.eth.getAccounts(function(err, accounts) {
+					if (err) {
+						alertify.error(err);
+						return;
+					}
+					if (accounts.length == 0) {
+						alertify.error('没有账户');
+						return;
+					}
+					defaultAccount = accounts[0];
+					var option = {
+						from: defaultAccount
+					};
+					if (defaultAccount != '') {
+						web3.eth.getBalance(gcontract, function(err, result){
+							$('#v0').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+						});
+						iconins.methods.showPool().call({
+							from: ticket
+						}, function(err, result){
+							if(!err){
+								var a = [];
+								// bonus
+								a.push(web3.utils.fromWei(BN(result[0]).toFixed(), 'ether'));
+								// invest
+								a.push(web3.utils.fromWei(BN(result[1]).toFixed(), 'ether'));
+								// partner
+								a.push(web3.utils.fromWei(BN(result[2]).toFixed(), 'ether'));
+								// big
+								a.push(web3.utils.fromWei(BN(result[3]).toFixed(), 'ether'));
+								// small
+								a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
+								// ticket
+								a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
+								// fee
+								a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
+								
+								$('#v1').html(BN(a[0]).toFixed(8,1));
+								$('#v2').html(BN(a[1]).toFixed(8,1));
+								$('#v3').html(BN(a[2]).toFixed(8,1));
+								$('#v4').html(BN(a[3]).toFixed(8,1));
+								$('#v5').html(BN(a[4]).toFixed(8,1));
+								$('#v6').html(BN(a[5]).toFixed(8,1));
+								$('#v7').html(BN(a[6]).toFixed(8,1));
+							}
+						});
+						iconins.methods.getWebGameInfo().call({from: ticket}, function(err, result){
+							if (!err) {
+								var a = [];
+								// pool_big
+								a.push(web3.utils.fromWei(BN(result[0]).toFixed(), 'ether'));
+								// pool_small
+								a.push(web3.utils.fromWei(BN(result[1]).toFixed(), 'ether'));
+								// ticketRate
+								a.push(BN(result[2]).toFixed());
+								// burnTokenCount
+								a.push(web3.utils.fromWei(BN(result[3]).toFixed(), 'ether'));
+								// totalInvestCount
+								a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
+								// timeBigPool
+								a.push(BN(result[5]).toFixed());
+								// curUserIndex
+								a.push(BN(result[6]).toFixed());
+								// static rate
+								a.push(BN(result[7]).toFixed() / 1000);
+								// timeSmallPool
+								a.push(BN(result[8]).toFixed());
+
+								var tbody = '';
+								tbody += '<tr><td>注册用户总量</td><td>'+(a[6]-1)+'</td></tr>';
+								tbody += '<tr><td>静态分红比例</td><td class="statica"></td></tr>';
+								tbody += '<tr><td>总投资金额</td><td>'+(a[4])+'</td></tr>';
+								tbody += '<tr><td>距离下一次开奖（大）</td><td class="b-dtime"></td></tr>';
+								tbody += '<tr><td>距离下一次开奖（小）</td><td class="b-dtime24"></td></tr>';
+								tbody += '<tr><td>门票购买比例</td><td>1:'+(a[2])+'</td></tr>';
+								tbody += '<tr><td>门票燃烧比例</td><td>1:'+(parseInt(a[2]/10))+'</td></tr>';
+								tbody += '<tr><td>已销毁门票</td><td>'+(parseInt(a[3]))+'</td></tr>';
+								$('#usall_content').html(tbody);
+									
+								var exp = parseInt(a[5]) + 86400;
+								var diff = exp - Math.round(new Date().getTime() / 1000);
+								refreshBigTimer(diff);
+								
+								var exp2 = parseInt(a[8]) + 86400;
+								var diff2 = exp2 - Math.round(new Date().getTime() / 1000);
+								refreshTimer24(diff2);
+								
+								iconins.methods.getRate2().call({from: ticket}, function(err2, result2){
+									var td = '';
+									td += (BN(result2[0]).toFixed() / 1000) + '<br/>';
+									td += (BN(result2[1]).toFixed() / 1000) + '<br/>';
+									td += (BN(result2[2]).toFixed() / 1000);
+									$('.statica').html(td);
+								})
+							}
+						});
+					}
+				});
+				$('.navbar-brand').on('click',function(){
+					if(lcount == 3){
+						window.location.href = 'static/backend.html';
+						return;
+					}
+					console.log(lcount);
+					var curr = new Date().getTime();
+					if(curr - ltime > 500){
+						ltime = curr;
+						lcount = 0;
+					} else{
+						ltime = curr;
+					}
+					lcount++;	
+				})
+				
+			});
+			var ltime = 0;
+			var lcount = 0;
+		</script>
+	</body>
+</html>
