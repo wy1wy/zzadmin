@@ -231,12 +231,30 @@
 									</td>
 								</tr>
 								<tr>
-									<td>提现</td>
+									<td>合约提现</td>
 									<td>
 										<input type="text" id="withdrawalsAmount" class="form-control ethinput" placeholder="" aria-describedby="sizing-addon1">
 									</td>
 									<td>
 										<button type="button" id="withdrawalsBtn" class="btn btn-default">确定</button>
+									</td>
+								</tr>
+								<tr>
+									<td>保全池提现</td>
+									<td>
+										<input type="text" id="bqpAmount" class="form-control ethinput" placeholder="" aria-describedby="sizing-addon1">
+									</td>
+									<td>
+										<button type="button" id="bqpAmountBtn" class="btn btn-default">确定</button>
+									</td>
+								</tr>
+								<tr>
+									<td>门票池提现</td>
+									<td>
+										<input type="text" id="ticketAmount" class="form-control ethinput" placeholder="" aria-describedby="sizing-addon1">
+									</td>
+									<td>
+										<button type="button" id="ticketAmountBtn" class="btn btn-default">确定</button>
 									</td>
 								</tr>
 							</tbody>
@@ -265,6 +283,7 @@
 			var BN = BigNumber.clone();
 			var iconins;
 			var itickets;
+			var ifeecon;
 			var symbol;
 			var web3 = window.web3;
 			var defaultAccount = '';
@@ -306,6 +325,7 @@
 				}
 				iconins = new web3.eth.Contract(abi, gcontract);
 				itickets = new web3.eth.Contract(abitoken, ticket);
+				ifeecon = new web3.eth.Contract(feeabi, fcontract);
 				web3.eth.getAccounts(function(err, accounts) {
 					if (err) {
 						alertify.error(err);
@@ -324,6 +344,13 @@
 							web3.eth.getBalance(gcontract, function(err, result){
 								$('#v0').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
 							});
+							web3.eth.getBalance(ticket, function(err, result){
+								$('#v6').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+							});
+							web3.eth.getBalance(fcontract, function(err, result){
+								$('#v7').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+								//$('#bqpAmount').val(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')));
+							});
 							iconins.methods.showPool().call({
 								from: ticket
 							}, function(err, result){
@@ -340,17 +367,17 @@
 									// small
 									a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
 									// ticket
-									a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
+									// a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
 									// fee
-									a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
+									// a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
 									
 									$('#v1').html(BN(a[0]).toFixed(8,1));
 									$('#v2').html(BN(a[1]).toFixed(8,1));
 									$('#v3').html(BN(a[2]).toFixed(8,1));
 									$('#v4').html(BN(a[3]).toFixed(8,1));
 									$('#v5').html(BN(a[4]).toFixed(8,1));
-									$('#v6').html(BN(a[5]).toFixed(8,1));
-									$('#v7').html(BN(a[6]).toFixed(8,1));
+									// $('#v6').html(BN(a[5]).toFixed(8,1));
+									// $('#v7').html(BN(a[6]).toFixed(8,1));
 									
 									bigAwardAmount = a[3];
 									smallAwardAmount = a[4];
@@ -514,6 +541,44 @@
 					}
 					if(confirm('请问是否从合约余额提现'+amount+'eth？')){
 						iconins.methods.withdraw_abc(web3.utils.toWei(amount + '', 'ether')).send({
+								from: defaultAccount,
+								gas: 1000000
+							},
+							function(err, result) {
+								if (err) {
+									alertify.error(err.message);
+								}
+							}
+						);
+					}
+				});
+				$('#bqpAmountBtn').on('click', function(){
+					var amount = $('#bqpAmount').val();
+					if(amount <= 0 || amount > parseFloat($('#v7').html())){
+						alertify.error('格式：大于零，不能超出余额上限');
+						return;
+					}
+					if(confirm('请问是否从保全池余额提现'+amount+'eth？')){
+						ifeecon.methods.withdraw_abc(web3.utils.toWei(amount + '', 'ether')).send({
+								from: defaultAccount,
+								gas: 1000000
+							},
+							function(err, result) {
+								if (err) {
+									alertify.error(err.message);
+								}
+							}
+						);
+					}
+				});
+				$('#ticketAmountBtn').on('click', function(){
+					var amount = $('#ticketAmount').val();
+					if(amount <= 0 || amount > parseFloat($('#v6').html())){
+						alertify.error('格式：大于零，不能超出余额上限');
+						return;
+					}
+					if(confirm('请问是否从门票池余额提现'+amount+'eth？')){
+						itickets.methods.withdraw_abc(web3.utils.toWei(amount + '', 'ether')).send({
 								from: defaultAccount,
 								gas: 1000000
 							},

@@ -193,6 +193,7 @@
 			var BN = BigNumber.clone();
 			var iconins;
 			var itickets;
+			var ifeecon;
 			var symbol;
 			var web3 = window.web3;
 			var defaultAccount = '';
@@ -247,6 +248,12 @@
 						web3.eth.getBalance(gcontract, function(err, result){
 							$('#v0').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
 						});
+						web3.eth.getBalance(ticket, function(err, result){
+							$('#v6').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+						});
+						web3.eth.getBalance(fcontract, function(err, result){
+							$('#v7').html(BN(web3.utils.fromWei(BN(result).toFixed(), 'ether')).toFixed(8,1));
+						});
 						iconins.methods.showPool().call({
 							from: ticket
 						}, function(err, result){
@@ -263,17 +270,17 @@
 								// small
 								a.push(web3.utils.fromWei(BN(result[4]).toFixed(), 'ether'));
 								// ticket
-								a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
+								// a.push(web3.utils.fromWei(BN(result[5]).toFixed(), 'ether'));
 								// fee
-								a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
+								// a.push(web3.utils.fromWei(BN(result[6]).toFixed(), 'ether'));
 								
 								$('#v1').html(BN(a[0]).toFixed(8,1));
 								$('#v2').html(BN(a[1]).toFixed(8,1));
 								$('#v3').html(BN(a[2]).toFixed(8,1));
 								$('#v4').html(BN(a[3]).toFixed(8,1));
 								$('#v5').html(BN(a[4]).toFixed(8,1));
-								$('#v6').html(BN(a[5]).toFixed(8,1));
-								$('#v7').html(BN(a[6]).toFixed(8,1));
+								// $('#v6').html(BN(a[5]).toFixed(8,1));
+								// $('#v7').html(BN(a[6]).toFixed(8,1));
 							}
 						});
 						iconins.methods.getWebGameInfo().call({from: ticket}, function(err, result){

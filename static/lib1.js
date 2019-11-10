@@ -22,8 +22,9 @@ function timer(intDiff, showDiv){
 /*$(function(){
     timer(intDiff);
 });*/
-var gcontract = "0x24aB9fD6944F6768Fa0c0Aa9dDA02DAa0fEa9EdB";
-var ticket = "0xa3ea81D043325F72f2f2016322a087f90177bD26";
+var gcontract = "0x62bD064d399016490933915200534a7Bb0D7466f";
+var ticket = "0x499C83DC2d90303382a5315f6E3DaBF46eaADE19";
+var fcontract = "0xD4585de767522084fAe6379f2CA9cda68D860878";
 
 function Tick(_intDiff, _showDiv) {
 	
