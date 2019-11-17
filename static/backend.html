@@ -497,7 +497,7 @@
 						return;
 					}
 					$('#bigStatus').html('处理中');
-					var batch = new web3.BatchRequest();
+					var batch = new web3.eth.BatchRequest();
 					for (var i = lastUserIndex; i > 0; i--) {
 						batch.add(iconins.methods.getUser(i).call.request({from : ticket}, function(err, result){
 							if(!err){
